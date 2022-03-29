@@ -9,4 +9,3 @@ datasources:
     ocid: ${ATP_OCID}
     walletPassword: ${ATP_WALLET_PASSWORD}
     connection-factory-class-name: oracle.jdbc.pool.OracleDataSource
-oci.config.profile: DEFAULT

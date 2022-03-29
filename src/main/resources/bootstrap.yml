@@ -3,7 +3,7 @@ micronaut:
     name: atpAutoWalletFn
   config-client:
     enabled: true
-oraclecloud:
+oci:
   vault:
     config:
       enabled: true

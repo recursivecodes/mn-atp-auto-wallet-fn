@@ -3,7 +3,7 @@ plugins {
     id("io.micronaut.application") version "3.3.0"
 }
 
-version = "0.1"
+version = "0.15"
 group = "atp.auto.wallet.fn"
 
 repositories {
@@ -22,11 +22,9 @@ dependencies {
 
     implementation("io.micronaut.oraclecloud:micronaut-oraclecloud-atp")
     implementation("io.micronaut.oraclecloud:micronaut-oraclecloud-sdk")
+    implementation("io.micronaut.oraclecloud:micronaut-oraclecloud-vault")
     implementation("io.micronaut.sql:micronaut-jdbc-ucp")
     implementation("com.oracle.database.jdbc:ojdbc11-production:21.1.0.0")
-    implementation("com.oracle.oci.sdk:oci-java-sdk-vault:2.10.0")
-    implementation("com.oracle.oci.sdk:oci-java-sdk-secrets:2.10.0")
-    implementation("com.oracle.oci.sdk:oci-java-sdk-common:2.10.0")
     testImplementation("com.fnproject.fn:testing-junit4")
     testImplementation("io.micronaut:micronaut-http-client")
 

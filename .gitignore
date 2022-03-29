@@ -12,3 +12,4 @@ out/
 .settings
 .classpath
 .factorypath
+/application.build_artifacts.txt
