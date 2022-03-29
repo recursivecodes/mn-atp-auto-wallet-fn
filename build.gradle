@@ -1,0 +1,84 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.micronaut.application") version "3.3.0"
+}
+
+version = "0.1"
+group = "atp.auto.wallet.fn"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("io.micronaut:micronaut-jackson-databind")
+    implementation("io.micronaut:micronaut-runtime")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    runtimeOnly("org.slf4j:slf4j-simple")
+    implementation("io.micronaut:micronaut-validation")
+    implementation("io.micronaut.oraclecloud:micronaut-oraclecloud-function")
+    implementation("com.fnproject.fn:api")
+    runtimeOnly("com.fnproject.fn:runtime")
+
+    implementation("io.micronaut.oraclecloud:micronaut-oraclecloud-atp")
+    implementation("io.micronaut.oraclecloud:micronaut-oraclecloud-sdk")
+    implementation("io.micronaut.sql:micronaut-jdbc-ucp")
+    implementation("com.oracle.database.jdbc:ojdbc11-production:21.1.0.0")
+    implementation("com.oracle.oci.sdk:oci-java-sdk-vault:2.10.0")
+    implementation("com.oracle.oci.sdk:oci-java-sdk-secrets:2.10.0")
+    implementation("com.oracle.oci.sdk:oci-java-sdk-common:2.10.0")
+    testImplementation("com.fnproject.fn:testing-junit4")
+    testImplementation("io.micronaut:micronaut-http-client")
+
+}
+
+
+application {
+    mainClass.set("com.fnproject.fn.runtime.EntryPoint")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("11")
+    targetCompatibility = JavaVersion.toVersion("11")
+}
+
+tasks {
+    dockerfileNative {
+        args("-XX:MaximumHeapSizePercent=80")
+        buildStrategy.set(io.micronaut.gradle.docker.DockerBuildStrategy.ORACLE_FUNCTION)
+        defaultCommand.set("atp.auto.wallet.fn.Function::handleRequest")
+    }
+
+    dockerfile {
+        buildStrategy.set(io.micronaut.gradle.docker.DockerBuildStrategy.ORACLE_FUNCTION)
+        defaultCommand.set("atp.auto.wallet.fn.Function::handleRequest")
+    }
+    dockerBuild {
+        images = ["phx.ocir.io/toddrsharp/atp-auto-wallet/$project.name:$project.version"]
+    }
+
+    dockerBuildNative {
+        images = ["phx.ocir.io/toddrsharp/atp-auto-wallet/$project.name-native:$project.version"]
+    }
+}
+graalvmNative.toolchainDetection = false
+graalvmNative {
+    binaries.configureEach {
+        buildArgs.addAll(
+             "-H:+StaticExecutableWithDynamicLibC",
+             "-Dfn.handler=atp.auto.wallet.fn.Function::handleRequest",
+             "--initialize-at-build-time=atp.auto.wallet.fn"
+        )
+    }
+}
+tasks.named("assemble") {
+    dependsOn(":shadowJar")
+}
+micronaut {
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("atp.auto.wallet.fn.*")
+    }
+}
+
+

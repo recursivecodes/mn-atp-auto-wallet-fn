@@ -1,0 +1,12 @@
+micronaut:
+  application:
+    name: atpAutoWalletFn
+datasources:
+  default:
+    dialect: ORACLE
+    username: ${ATP_USER}
+    password: ${ATP_PASSWORD}
+    ocid: ${ATP_OCID}
+    walletPassword: ${ATP_WALLET_PASSWORD}
+    connection-factory-class-name: oracle.jdbc.pool.OracleDataSource
+oci.config.profile: DEFAULT

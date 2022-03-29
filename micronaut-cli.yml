@@ -1,0 +1,6 @@
+applicationType: function
+defaultPackage: atp.auto.wallet.fn
+testFramework: junit
+sourceLanguage: java
+buildTool: gradle
+features: [annotation-api, app-name, gradle, jackson-databind, java, junit, micronaut-build, oracle-function, readme, shade, slf4j-simple, yaml]
