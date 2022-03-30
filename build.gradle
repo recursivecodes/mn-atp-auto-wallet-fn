@@ -65,7 +65,7 @@ graalvmNative {
              "-H:+StaticExecutableWithDynamicLibC",
              "-Dfn.handler=atp.auto.wallet.fn.Function::handleRequest",
              "--initialize-at-build-time=atp.auto.wallet.fn",
-             "-H:ReflectionConfigurationFiles=reflectionconfig.json"
+             "-H:ReflectionConfigurationFiles=/home/app/resources/reflectionconfig.json"
         )
     }
 }
